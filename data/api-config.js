@@ -17,9 +17,9 @@ const API_CONFIG = {
         if (typeof process !== 'undefined' && process.env && process.env.AMAP_API_KEY) {
             return process.env.AMAP_API_KEY;
         }
-        // 2. 尝试从Vite环境变量读取
-        if (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_AMAP_API_KEY) {
-            return import.meta.env.VITE_AMAP_API_KEY;
+        // 2. 尝试从Vite环境变量读取（通过process.env，Vite也会注入）
+        if (typeof process !== 'undefined' && process.env && process.env.VITE_AMAP_API_KEY) {
+            return process.env.VITE_AMAP_API_KEY;
         }
         // 3. 尝试从全局变量读取
         if (typeof window !== 'undefined' && window.ENV && window.ENV.AMAP_API_KEY) {

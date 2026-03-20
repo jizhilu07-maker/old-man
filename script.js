@@ -60,21 +60,30 @@ function loadAmap() {
 
         // 获取API密钥 - 优先级：全局ENV变量 > api-config.js > 默认值
         let apiKey = '438511649cf264b6bdf538592e4bbe0e'; // 默认测试密钥
+        let keySource = '默认测试密钥';
 
         // 1. 尝试从全局ENV变量读取
         if (window.ENV && window.ENV.AMAP_API_KEY) {
             apiKey = window.ENV.AMAP_API_KEY;
-            console.log('使用全局ENV中的高德地图API密钥');
+            keySource = '全局ENV变量';
+            console.log(`使用${keySource}中的高德地图API密钥`);
         }
         // 2. 尝试从dataService配置读取
         else if (window.dataService && dataService.config && dataService.config.AMAP_API_KEY) {
             apiKey = dataService.config.AMAP_API_KEY;
-            console.log('使用dataService配置中的高德地图API密钥');
+            keySource = 'dataService配置';
+            console.log(`使用${keySource}中的高德地图API密钥`);
         }
         // 3. 尝试从API_CONFIG读取（如果已加载）
         else if (typeof API_CONFIG !== 'undefined' && API_CONFIG.AMAP_API_KEY) {
             apiKey = API_CONFIG.AMAP_API_KEY;
-            console.log('使用API_CONFIG中的高德地图API密钥');
+            keySource = 'API_CONFIG';
+            console.log(`使用${keySource}中的高德地图API密钥`);
+        }
+
+        // 如果使用默认测试密钥，记录警告
+        if (keySource === '默认测试密钥') {
+            console.warn('⚠️ 使用默认测试API密钥，地图功能可能受限。建议设置AMAP_API_KEY环境变量。');
         }
 
         // 动态创建script标签加载高德地图
@@ -590,10 +599,12 @@ async function initAmapMap(coordinates, title) {
         if (!mapContainer) return;
 
         AppState.amap = new AMap.Map('detail-map', {
-            zoom: 15,
+            zoom: 17,  // 增加缩放级别，显示更多细节
             center: coordinates,
             viewMode: '2D',
-            resizeEnable: true
+            resizeEnable: true,
+            features: ['bg', 'road', 'building', 'point'],  // 启用更多地图要素
+            mapStyle: 'amap://styles/normal'  // 使用标准地图样式
         });
 
         // 添加标记
@@ -602,6 +613,26 @@ async function initAmapMap(coordinates, title) {
             title: title,
             map: AppState.amap
         });
+
+        // 添加地图控件
+        // 1. 工具栏控件（缩放、定位等）
+        const toolBar = new AMap.ToolBar({
+            position: 'RT'  // 右上角
+        });
+        AppState.amap.addControl(toolBar);
+
+        // 2. 比例尺控件
+        const scale = new AMap.Scale({
+            position: 'LB'  // 左下角
+        });
+        AppState.amap.addControl(scale);
+
+        // 3. 地图类型切换控件
+        const mapType = new AMap.MapType({
+            defaultType: 0,  // 默认显示普通地图
+            position: 'RT'   // 右上角，在工具栏下方
+        });
+        AppState.amap.addControl(mapType);
 
         // 添加信息窗口
         const infoWindow = new AMap.InfoWindow({

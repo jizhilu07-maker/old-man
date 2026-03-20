@@ -12,6 +12,14 @@ const amapApiKey = process.env.AMAP_API_KEY || process.env.VITE_AMAP_API_KEY;
 if (!amapApiKey) {
     console.log('未设置AMAP_API_KEY环境变量，使用默认值');
     console.log('提示：在Vercel项目中设置AMAP_API_KEY环境变量以使用您自己的高德地图API密钥');
+
+    // 在CI/CD环境（如Vercel）中，如果没有API密钥则抛出错误
+    if (process.env.CI === 'true' || process.env.VERCEL === '1') {
+        console.error('❌ 错误：在CI/CD环境中未设置AMAP_API_KEY环境变量');
+        console.error('请在Vercel项目设置中添加AMAP_API_KEY环境变量');
+        process.exit(1);
+    }
+
     return;
 }
 
