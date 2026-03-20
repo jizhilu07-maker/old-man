@@ -11,8 +11,23 @@ const API_CONFIG = {
     // 真实API端点（开发完成后使用）
     API_BASE_URL: 'https://api.example.com/elderly-homes',
 
-    // 高德地图API密钥（需要替换为真实密钥）
-    AMAP_API_KEY: '438511649cf264b6bdf538592e4bbe0e',
+    // 高德地图API密钥 - 优先级：环境变量 > 全局变量 > 默认值
+    AMAP_API_KEY: (() => {
+        // 1. 尝试从环境变量读取（Vercel等平台）
+        if (typeof process !== 'undefined' && process.env && process.env.AMAP_API_KEY) {
+            return process.env.AMAP_API_KEY;
+        }
+        // 2. 尝试从Vite环境变量读取
+        if (typeof import !== 'undefined' && import.meta && import.meta.env && import.meta.env.VITE_AMAP_API_KEY) {
+            return import.meta.env.VITE_AMAP_API_KEY;
+        }
+        // 3. 尝试从全局变量读取
+        if (typeof window !== 'undefined' && window.ENV && window.ENV.AMAP_API_KEY) {
+            return window.ENV.AMAP_API_KEY;
+        }
+        // 4. 使用默认值（开发环境测试密钥）
+        return '438511649cf264b6bdf538592e4bbe0e';
+    })(),
 
     // 数据缓存设置（单位：分钟）
     CACHE_DURATION: 60,

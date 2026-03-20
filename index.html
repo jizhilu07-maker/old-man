@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- 高德地图API -->
-    <script src="https://webapi.amap.com/maps?v=2.0&key=438511649cf264b6bdf538592e4bbe0e"></script>
+    <!-- 高德地图API将在JavaScript中动态加载 -->
+    <script>
+        // 设置全局环境变量（可在Vercel等平台通过构建时注入）
+        window.ENV = window.ENV || {};
+        // 高德地图API密钥 - 可通过环境变量设置
+        window.ENV.AMAP_API_KEY = window.ENV.AMAP_API_KEY || '438511649cf264b6bdf538592e4bbe0e';
+    </script>
 </head>
 <body>
     <!-- 页头 -->

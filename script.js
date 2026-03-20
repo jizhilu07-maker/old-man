@@ -46,6 +46,57 @@ function escapeHtml(str) {
 }
 
 /**
+ * 动态加载高德地图API
+ * @returns {Promise<boolean>} 是否加载成功
+ */
+function loadAmap() {
+    return new Promise((resolve, reject) => {
+        // 如果已经加载，直接返回成功
+        if (typeof AMap !== 'undefined') {
+            console.log('高德地图API已加载');
+            resolve(true);
+            return;
+        }
+
+        // 获取API密钥 - 优先级：全局ENV变量 > api-config.js > 默认值
+        let apiKey = '438511649cf264b6bdf538592e4bbe0e'; // 默认测试密钥
+
+        // 1. 尝试从全局ENV变量读取
+        if (window.ENV && window.ENV.AMAP_API_KEY) {
+            apiKey = window.ENV.AMAP_API_KEY;
+            console.log('使用全局ENV中的高德地图API密钥');
+        }
+        // 2. 尝试从dataService配置读取
+        else if (window.dataService && dataService.config && dataService.config.AMAP_API_KEY) {
+            apiKey = dataService.config.AMAP_API_KEY;
+            console.log('使用dataService配置中的高德地图API密钥');
+        }
+        // 3. 尝试从API_CONFIG读取（如果已加载）
+        else if (typeof API_CONFIG !== 'undefined' && API_CONFIG.AMAP_API_KEY) {
+            apiKey = API_CONFIG.AMAP_API_KEY;
+            console.log('使用API_CONFIG中的高德地图API密钥');
+        }
+
+        // 动态创建script标签加载高德地图
+        const script = document.createElement('script');
+        script.src = `https://webapi.amap.com/maps?v=2.0&key=${apiKey}`;
+        script.async = true;
+
+        script.onload = () => {
+            console.log('高德地图API加载成功');
+            resolve(true);
+        };
+
+        script.onerror = (error) => {
+            console.error('高德地图API加载失败:', error);
+            reject(new Error('高德地图API加载失败，请检查API密钥和网络连接'));
+        };
+
+        document.head.appendChild(script);
+    });
+}
+
+/**
  * 初始化应用
  */
 async function initApp() {
@@ -344,7 +395,7 @@ async function showDetailModal(id) {
         document.body.style.overflow = 'hidden'; // 防止背景滚动
 
         // 初始化地图
-        initAmapMap(home.coordinates, home.name);
+        await initAmapMap(home.coordinates, home.name);
     } catch (error) {
         console.error('加载详情失败:', error);
         showError('加载详情失败');
@@ -483,7 +534,7 @@ function updateDetailModal(home) {
  * @param {Array} coordinates 坐标数组 [经度, 纬度]
  * @param {string} title 标记标题
  */
-function initAmapMap(coordinates, title) {
+async function initAmapMap(coordinates, title) {
     // 清除之前的地图实例
     if (AppState.amapMarker) {
         AppState.amapMarker.setMap(null);
@@ -495,19 +546,42 @@ function initAmapMap(coordinates, title) {
         AppState.amap = null;
     }
 
-    // 检查高德地图API是否加载
+    // 检查高德地图API是否加载，如果没有则尝试加载
     if (typeof AMap === 'undefined') {
-        console.error('高德地图API未加载');
-        document.getElementById('detail-map').innerHTML = `
-            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">
-                <div style="text-align: center;">
-                    <i class="fas fa-map" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                    <p>地图加载失败</p>
-                    <p style="font-size: 0.9rem;">请检查网络连接或API密钥</p>
-                </div>
-            </div>
-        `;
-        return;
+        console.log('高德地图API未加载，尝试动态加载...');
+
+        try {
+            // 显示加载状态
+            const mapContainer = document.getElementById('detail-map');
+            if (mapContainer) {
+                mapContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">
+                        <div style="text-align: center;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>正在加载地图...</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            await loadAmap();
+            console.log('高德地图API加载成功，继续初始化地图');
+        } catch (error) {
+            console.error('高德地图API加载失败:', error);
+            const mapContainer = document.getElementById('detail-map');
+            if (mapContainer) {
+                mapContainer.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">
+                        <div style="text-align: center;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <p>地图加载失败</p>
+                            <p style="font-size: 0.9rem;">${error.message || '请检查API密钥和网络连接'}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            return;
+        }
     }
 
     // 初始化地图
