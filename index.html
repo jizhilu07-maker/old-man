@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>浙江省养老院目录 - 温馨家园查询</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 高德地图API -->
+    <script src="https://webapi.amap.com/maps?v=2.0&key=438511649cf264b6bdf538592e4bbe0e"></script>
+</head>
+<body>
+    <!-- 页头 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-home-heart"></i>
+                <h1>浙江养老院目录</h1>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active"><i class="fas fa-home"></i> 首页</a>
+                <a href="#" class="nav-link"><i class="fas fa-search"></i> 搜索</a>
+                <a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> 地图</a>
+                <a href="#" class="nav-link"><i class="fas fa-info-circle"></i> 关于</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 搜索区域 -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" placeholder="搜索养老院名称..." class="search-input">
+                <button id="search-btn" class="search-btn">搜索</button>
+            </div>
+            <div class="search-tips">
+                <span>浙江省 · 专业养老机构查询</span>
+            </div>
+
+            <!-- 筛选区域 -->
+            <div class="filters-section" id="filters-section" style="margin-top: 1.5rem; padding: 1rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                <div class="filters-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin: 0;">
+                        <i class="fas fa-filter"></i> 筛选条件
+                    </h3>
+                    <button id="clear-filters" class="btn-secondary" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">
+                        <i class="fas fa-times"></i> 清除筛选
+                    </button>
+                </div>
+
+                <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <!-- 城市筛选 -->
+                    <div class="filter-group">
+                        <label for="city-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                            <i class="fas fa-city"></i> 城市
+                        </label>
+                        <select id="city-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                            <option value="">全部城市</option>
+                            <!-- 城市选项将通过JavaScript动态添加 -->
+                        </select>
+                    </div>
+
+                    <!-- 服务类型筛选 -->
+                    <div class="filter-group">
+                        <label for="service-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                            <i class="fas fa-concierge-bell"></i> 服务类型
+                        </label>
+                        <select id="service-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                            <option value="">全部服务</option>
+                            <!-- 服务选项将通过JavaScript动态添加 -->
+                        </select>
+                    </div>
+
+                    <!-- 评分筛选 -->
+                    <div class="filter-group">
+                        <label for="rating-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                            <i class="fas fa-star"></i> 最低评分
+                        </label>
+                        <select id="rating-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                            <option value="0">全部评分</option>
+                            <option value="3">3星及以上</option>
+                            <option value="3.5">3.5星及以上</option>
+                            <option value="4">4星及以上</option>
+                            <option value="4.5">4.5星及以上</option>
+                        </select>
+                    </div>
+
+                    <!-- 价格范围筛选（占位符，未来扩展） -->
+                    <div class="filter-group">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
+                            <i class="fas fa-yen-sign"></i> 价格范围
+                        </label>
+                        <div style="padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); font-size: 0.95rem; color: var(--text-secondary); text-align: center;">
+                            功能开发中
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <main class="main">
+        <div class="container">
+            <div class="content-header">
+                <h2><i class="fas fa-building"></i> 养老院列表</h2>
+                <div class="result-count">共 <span id="total-count">0</span> 家养老院</div>
+            </div>
+
+            <!-- 养老院列表容器 -->
+            <div class="elderly-list" id="elderly-list">
+                <!-- 动态加载的养老院卡片将在这里显示 -->
+                <div class="loading" id="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>正在加载养老院数据...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 详情模态框 -->
+    <div class="modal" id="detail-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">养老院详情</h3>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 动态加载的详情内容将在这里显示 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-home-heart"></i> 浙江养老院目录</h4>
+                    <p>为您提供浙江省专业养老机构查询服务</p>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p><i class="fas fa-phone"></i> 客服热线: 400-XXX-XXXX</p>
+                    <p><i class="fas fa-envelope"></i> 邮箱: service@example.com</p>
+                </div>
+                <div class="footer-section">
+                    <h4>关注我们</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 浙江省养老院目录. 版权所有.</p>
+                <p>数据仅供参考，具体信息请以实际为准</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="data/api-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

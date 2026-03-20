@@ -1,0 +1,30 @@
+{
+  "name": "elderly-directory",
+  "version": "1.0.0",
+  "description": "一个简洁现代的养老院信息查询网站，专注于浙江省范围内的养老机构展示。",
+  "main": "script.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --testPathIgnorePatterns=e2e",
+    "test:e2e": "jest --config jest.e2e.config.js",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "jsdom": "^29.0.0",
+    "puppeteer": "^24.39.1",
+    "terser": "^5.46.1",
+    "vite": "^8.0.0"
+  }
+}
