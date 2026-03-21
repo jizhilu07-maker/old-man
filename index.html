@@ -3,172 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>浙江省养老院目录 - 温馨家园查询</title>
+    <title>温馨家园 - 浙江省养老院目录</title>
+    <meta name="description" content="为您寻找浙江省最温馨、最专业的养老机构，让晚年生活更美好">
     <link rel="stylesheet" href="style.css">
+    <!-- 优雅字体组合 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- 高德地图API将在JavaScript中动态加载 -->
+
+    <!-- 高德地图API密钥配置 -->
     <script>
-        // 设置全局环境变量（可在Vercel等平台通过构建时注入）
         window.ENV = window.ENV || {};
-        // 高德地图API密钥 - 可通过环境变量设置
         window.ENV.AMAP_API_KEY = window.ENV.AMAP_API_KEY || '438511649cf264b6bdf538592e4bbe0e';
+    </script>
+
+    <!-- 结构化数据，提升SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "温馨家园 - 浙江省养老院目录",
+        "description": "为您寻找浙江省最温馨、最专业的养老机构",
+        "url": "https://your-domain.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://your-domain.com?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
     </script>
 </head>
 <body>
-    <!-- 页头 -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <i class="fas fa-home-heart"></i>
-                <h1>浙江养老院目录</h1>
+    <!-- 装饰性背景元素 -->
+    <div class="bg-decoration">
+        <div class="bg-circle circle-1"></div>
+        <div class="bg-circle circle-2"></div>
+        <div class="bg-circle circle-3"></div>
+    </div>
+
+    <!-- 页头 - 温馨导航 -->
+    <header class="site-header">
+        <div class="container header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fas fa-home-heart"></i>
+                </div>
+                <div class="brand-text">
+                    <h1 class="site-title">温馨家园</h1>
+                    <p class="site-subtitle">浙江省养老院目录</p>
+                </div>
             </div>
-            <nav class="nav">
-                <a href="#" class="nav-link active"><i class="fas fa-home"></i> 首页</a>
-                <a href="#" class="nav-link"><i class="fas fa-search"></i> 搜索</a>
-                <a href="#" class="nav-link"><i class="fas fa-map-marker-alt"></i> 地图</a>
-                <a href="#" class="nav-link"><i class="fas fa-info-circle"></i> 关于</a>
+
+            <nav class="main-nav" aria-label="主导航">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#search" class="nav-link active" aria-current="page">
+                            <i class="fas fa-search"></i>
+                            <span class="nav-text">寻找家园</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">
+                            <i class="fas fa-heart"></i>
+                            <span class="nav-text">服务特色</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link">
+                            <i class="fas fa-phone-alt"></i>
+                            <span class="nav-text">联系我们</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
+
+            <button class="mobile-menu-btn" aria-label="切换菜单" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
-    <!-- 搜索区域 -->
-    <section class="search-section">
-        <div class="container">
-            <div class="search-box">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search-input" placeholder="搜索养老院名称..." class="search-input">
-                <button id="search-btn" class="search-btn">搜索</button>
-            </div>
-            <div class="search-tips">
-                <span>浙江省 · 专业养老机构查询</span>
-            </div>
+    <!-- 主搜索区 - 视觉焦点 -->
+    <section class="hero-section" id="search">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-leaf"></i>
+                    <span>温暖陪伴 · 专业照护</span>
+                </div>
 
-            <!-- 筛选区域 -->
-            <div class="filters-section" id="filters-section" style="margin-top: 1.5rem; padding: 1rem; background: var(--card-bg); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <div class="filters-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                    <h3 style="font-size: 1.1rem; color: var(--text-primary); margin: 0;">
-                        <i class="fas fa-filter"></i> 筛选条件
-                    </h3>
-                    <button id="clear-filters" class="btn-secondary" style="font-size: 0.9rem; padding: 0.4rem 0.8rem;">
-                        <i class="fas fa-times"></i> 清除筛选
+                <h2 class="hero-title">
+                    为所爱之人寻找
+                    <span class="highlight">温馨的家</span>
+                </h2>
+
+                <p class="hero-description">
+                    探索浙江省<span class="stat-number">200+</span>家专业养老机构，<br>
+                    根据位置、服务、评分找到最适合的选择
+                </p>
+
+                <!-- 主搜索框 -->
+                <div class="search-hero">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            id="search-input"
+                            class="search-input"
+                            placeholder="输入养老院名称、城市或服务类型..."
+                            aria-label="搜索养老院"
+                        >
+                        <div class="search-suggestions" id="search-suggestions" aria-live="polite"></div>
+                    </div>
+                    <button id="search-btn" class="search-btn" aria-label="搜索">
+                        <i class="fas fa-search"></i>
+                        <span>开始寻找</span>
                     </button>
                 </div>
 
-                <div class="filters-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                    <!-- 城市筛选 -->
-                    <div class="filter-group">
-                        <label for="city-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
-                            <i class="fas fa-city"></i> 城市
-                        </label>
-                        <select id="city-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                <div class="search-tags">
+                    <span class="tag-label">热门搜索：</span>
+                    <button class="tag" data-search="杭州">杭州</button>
+                    <button class="tag" data-search="护理型">护理型养老院</button>
+                    <button class="tag" data-search="医养结合">医养结合</button>
+                    <button class="tag" data-search="4.5星以上">高评分机构</button>
+                </div>
+            </div>
+
+            <div class="hero-illustration">
+                <div class="illustration-circle">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 智能筛选区 -->
+    <section class="filters-section">
+        <div class="container filters-container">
+            <div class="filters-header">
+                <h3 class="section-title">
+                    <i class="fas fa-sliders-h"></i>
+                    智能筛选
+                </h3>
+                <p class="section-subtitle">精确匹配您的需求，找到理想家园</p>
+            </div>
+
+            <div class="filters-grid" id="filters-section">
+                <!-- 城市筛选 -->
+                <div class="filter-card">
+                    <label for="city-filter" class="filter-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        所在城市
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="city-filter" class="filter-select" aria-label="选择城市">
                             <option value="">全部城市</option>
-                            <!-- 城市选项将通过JavaScript动态添加 -->
+                            <!-- 城市选项动态添加 -->
                         </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
                     </div>
+                </div>
 
-                    <!-- 服务类型筛选 -->
-                    <div class="filter-group">
-                        <label for="service-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
-                            <i class="fas fa-concierge-bell"></i> 服务类型
-                        </label>
-                        <select id="service-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                <!-- 服务类型筛选 -->
+                <div class="filter-card">
+                    <label for="service-filter" class="filter-label">
+                        <i class="fas fa-concierge-bell"></i>
+                        服务类型
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="service-filter" class="filter-select" aria-label="选择服务类型">
                             <option value="">全部服务</option>
-                            <!-- 服务选项将通过JavaScript动态添加 -->
+                            <!-- 服务选项动态添加 -->
                         </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
                     </div>
+                </div>
 
-                    <!-- 评分筛选 -->
-                    <div class="filter-group">
-                        <label for="rating-filter" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
-                            <i class="fas fa-star"></i> 最低评分
-                        </label>
-                        <select id="rating-filter" class="filter-select" style="width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: white; font-size: 0.95rem; color: var(--text-primary);">
+                <!-- 评分筛选 -->
+                <div class="filter-card">
+                    <label for="rating-filter" class="filter-label">
+                        <i class="fas fa-star"></i>
+                        最低评分
+                    </label>
+                    <div class="select-wrapper">
+                        <select id="rating-filter" class="filter-select" aria-label="选择最低评分">
                             <option value="0">全部评分</option>
                             <option value="3">3星及以上</option>
                             <option value="3.5">3.5星及以上</option>
                             <option value="4">4星及以上</option>
                             <option value="4.5">4.5星及以上</option>
                         </select>
+                        <i class="fas fa-chevron-down select-arrow"></i>
                     </div>
+                </div>
 
-                    <!-- 价格范围筛选（占位符，未来扩展） -->
-                    <div class="filter-group">
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-primary);">
-                            <i class="fas fa-yen-sign"></i> 价格范围
-                        </label>
-                        <div style="padding: 0.6rem 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-secondary); font-size: 0.95rem; color: var(--text-secondary); text-align: center;">
-                            功能开发中
-                        </div>
+                <!-- 价格筛选（占位符） -->
+                <div class="filter-card">
+                    <label class="filter-label">
+                        <i class="fas fa-yen-sign"></i>
+                        价格范围
+                    </label>
+                    <div class="filter-placeholder">
+                        <i class="fas fa-clock"></i>
+                        <span>功能开发中</span>
                     </div>
+                </div>
+
+                <!-- 操作按钮 -->
+                <div class="filter-actions">
+                    <button id="apply-filters" class="filter-btn primary">
+                        <i class="fas fa-check"></i>
+                        应用筛选
+                    </button>
+                    <button id="clear-filters" class="filter-btn secondary">
+                        <i class="fas fa-times"></i>
+                        清除筛选
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 主要内容区域 -->
-    <main class="main">
+    <!-- 养老院列表区 -->
+    <main class="main-content" id="elderly-list-section">
         <div class="container">
             <div class="content-header">
-                <h2><i class="fas fa-building"></i> 养老院列表</h2>
-                <div class="result-count">共 <span id="total-count">0</span> 家养老院</div>
+                <div class="header-left">
+                    <h2 class="content-title">
+                        <i class="fas fa-home"></i>
+                        温馨家园推荐
+                    </h2>
+                    <div class="result-info">
+                        <span class="result-count">共 <span id="total-count">0</span> 家养老院</span>
+                        <span class="result-sorting">
+                            <button class="sort-btn" data-sort="rating">
+                                <i class="fas fa-sort-amount-down"></i>
+                                按评分排序
+                            </button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" aria-label="网格视图">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="view-btn" data-view="list" aria-label="列表视图">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
             </div>
 
             <!-- 养老院列表容器 -->
-            <div class="elderly-list" id="elderly-list">
-                <!-- 动态加载的养老院卡片将在这里显示 -->
-                <div class="loading" id="loading">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <p>正在加载养老院数据...</p>
+            <div class="elderly-container">
+                <div class="elderly-list" id="elderly-list" role="list" aria-label="养老院列表">
+                    <!-- 动态加载的养老院卡片 -->
+                    <div class="loading-state" id="loading">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <p class="loading-text">正在加载温馨家园数据...</p>
+                    </div>
                 </div>
+
+                <!-- 空状态 -->
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <div class="empty-illustration">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="empty-title">未找到匹配的养老院</h3>
+                    <p class="empty-description">尝试调整筛选条件或搜索关键词</p>
+                    <button class="empty-action" id="reset-search">
+                        <i class="fas fa-redo"></i>
+                        重置搜索条件
+                    </button>
+                </div>
+            </div>
+
+            <!-- 分页控件 -->
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="page-btn prev" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    上一页
+                </button>
+                <div class="page-numbers">
+                    <span class="page-current">1</span>
+                    <span class="page-total">/ <span id="total-pages">1</span></span>
+                </div>
+                <button class="page-btn next">
+                    下一页
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </main>
 
     <!-- 详情模态框 -->
-    <div class="modal" id="detail-modal">
-        <div class="modal-content">
+    <div class="modal-overlay" id="detail-modal" aria-hidden="true" aria-labelledby="modal-title">
+        <div class="modal-container" role="dialog" aria-modal="true">
             <div class="modal-header">
-                <h3 id="modal-title">养老院详情</h3>
-                <button class="close-btn" id="close-modal">&times;</button>
+                <h3 id="modal-title" class="modal-title">养老院详情</h3>
+                <button
+                    id="close-modal"
+                    class="modal-close"
+                    aria-label="关闭详情"
+                >
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+
             <div class="modal-body" id="modal-body">
-                <!-- 动态加载的详情内容将在这里显示 -->
+                <!-- 动态加载的详情内容 -->
+            </div>
+
+            <div class="modal-footer">
+                <button class="modal-btn contact">
+                    <i class="fas fa-phone-alt"></i>
+                    立即联系
+                </button>
+                <button class="modal-btn share">
+                    <i class="fas fa-share-alt"></i>
+                    分享给家人
+                </button>
             </div>
         </div>
     </div>
 
     <!-- 页脚 -->
-    <footer class="footer">
+    <footer class="site-footer" id="contact">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4><i class="fas fa-home-heart"></i> 浙江养老院目录</h4>
-                    <p>为您提供浙江省专业养老机构查询服务</p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-home-heart"></i>
+                    </div>
+                    <div class="footer-text">
+                        <h4 class="footer-title">温馨家园</h4>
+                        <p class="footer-motto">让每个晚年都温暖如家</p>
+                    </div>
                 </div>
-                <div class="footer-section">
-                    <h4>联系我们</h4>
-                    <p><i class="fas fa-phone"></i> 客服热线: 400-XXX-XXXX</p>
-                    <p><i class="fas fa-envelope"></i> 邮箱: service@example.com</p>
+
+                <div class="footer-links">
+                    <h5 class="links-title">快速导航</h5>
+                    <ul class="links-list">
+                        <li><a href="#search">寻找养老院</a></li>
+                        <li><a href="#about">服务特色</a></li>
+                        <li><a href="#contact">联系我们</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                    </ul>
                 </div>
-                <div class="footer-section">
-                    <h4>关注我们</h4>
+
+                <div class="footer-contact">
+                    <h5 class="contact-title">联系我们</h5>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> 客服热线: 400-123-4567</p>
+                        <p><i class="fas fa-envelope"></i> 邮箱: care@wenxinjiayuan.com</p>
+                        <p><i class="fas fa-clock"></i> 服务时间: 9:00-18:00</p>
+                    </div>
+                </div>
+
+                <div class="footer-social">
+                    <h5 class="social-title">关注我们</h5>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-weixin"></i></a>
-                        <a href="#"><i class="fab fa-weibo"></i></a>
-                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#" class="social-icon wechat" aria-label="微信公众号">
+                            <i class="fab fa-weixin"></i>
+                        </a>
+                        <a href="#" class="social-icon weibo" aria-label="微博">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                        <a href="#" class="social-icon qq" aria-label="QQ">
+                            <i class="fab fa-qq"></i>
+                        </a>
                     </div>
                 </div>
             </div>
+
             <div class="footer-bottom">
-                <p>&copy; 2026 浙江省养老院目录. 版权所有.</p>
-                <p>数据仅供参考，具体信息请以实际为准</p>
+                <p class="copyright">
+                    &copy; 2026 <span class="brand-em">温馨家园</span> - 浙江省养老院目录. 保留所有权利.
+                </p>
+                <p class="disclaimer">
+                    数据仅供参考，具体信息请以机构实际提供为准
+                </p>
             </div>
         </div>
     </footer>
 
+    <!-- 滚动到顶部按钮 -->
+    <button class="scroll-top" aria-label="滚动到顶部">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- JavaScript文件 -->
     <script src="data/api-config.js"></script>
     <script src="script.js"></script>
+    <script src="script-enhancements.js" defer></script>
 </body>
 </html>
