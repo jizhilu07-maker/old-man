@@ -20,10 +20,10 @@
   "type": "commonjs",
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
-    "jest": "^30.3.0",
-    "jest-environment-jsdom": "^30.3.0",
+    "jest": "^30.4.3",
+    "jest-environment-jsdom": "^30.4.3",
     "jsdom": "^29.0.0",
-    "puppeteer": "^24.39.1",
+    "puppeteer": "^24.6.0",
     "terser": "^5.46.1",
     "vite": "^8.0.0"
   }
